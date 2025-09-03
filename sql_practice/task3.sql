@@ -17,3 +17,15 @@
 -- Write an SQL query to retrieve the users who have placed orders on consecutive days for at least 3 days.
 -- The result should include the user ID and username.
 -- Hint: You may need to use subqueries, joins, and window functions to solve this problem.
+
+-- Problem 13: Retrieve the users who have placed orders and not pay.
+  -- user_id, user_name, order amount
+ 
+  -- Problem 14: Retrieve the users who have placed orders and left balance to be paid
+  -- user_id, user_name, order amount, pay amount, left to be paid
+
+-- Problem 15: Retrieve  total_amount is bigger than unit_price * quantity
+  -- user_id, order_id, product_id, product_name, quantity, unit_price, total_amount
+
+-- Problem 16: Retrieve  the user have largest order in one week and  order detail
+-- user_id, order_id, product_id, product_name, quantity, unit_price, total_amount of order in one week

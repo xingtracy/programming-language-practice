@@ -102,20 +102,19 @@
   
   --Note:join Orders itself and compare order_date, DATEDIFF(DAY, o.order_date, o2.order_date) use other sytax on other databases
 
-
-
 -- Problem 9: Retrieve the top 3 categories with the highest total sales amount
 -- Write an SQL query to retrieve the top 3 categories with the highest total sales amount.
 -- The result should include the category ID, category name, and the total sales amount.
 -- Hint: You may need to use subqueries, joins, and aggregate functions to solve this problem.
 
-  select top 3 sum(o.total_amount) as TotalAmount, c.category_id,c.category_name 
-  from  Orders o
-  join Order_Items oi on oi.order_id = o.order_id
-  join Products p on p.product_id = oi.product_id
-  join Categories c on c.category_id = p.category_id
-  group by c.category_id, c.category_name
-  order by sum(o.total_amount) desc
+SELECT c.category_id, c.category_name, SUM(oi.unit_price * quantity) as totalSalesAmount
+FROM category c
+JOIN product p ON p.category_id=C.category_id
+JOIN order_items oi on oi.product_id=p.product_id
+GROUP BY c.category_id, c.category_name
+ORDER BY totalSalesAmount DESC
+LIMIT 3;
+
 
 -- Problem 10: Retrieve the users who have placed orders for all products in the Toys & Games
 -- Write an SQL query to retrieve the users who have placed orders for all products in the Toys & Games
@@ -123,23 +122,24 @@
 -- Hint: You may need to use subqueries, joins, and aggregate functions to solve this problem.
 -- category_id 3 is Toys & Games
 
-  select distinct u.user_id, u.username
-  from Users u
-  join Orders o on o.user_id = u.user_id
-  join Order_Items oi on oi.order_id = o.order_id
-  join Products p on p.product_id = oi.product_id
-  join Categories c on c.category_id = p.category_id
-  where c.category_id = 3
-  group by u.user_id, u.username
-  having count(distinct p.product_id) = (select count(1) from  Products where category_id = 3)
+SELECT u.user_id, u.username FROM Users u
+JOIN Orders o ON o.user_id=u.user_id
+JOIN order_items oi on oi.order_id=o.order_id
+JOIN product p on p.product_id=oi.product_id
+JOIN category c on p.category_id=c.category_id
+WHERE p.category_id=3
+GROUP BY u.user_id, u.username
+HAVING count(DISTINCT p.product_id) = (
+  Select Count(product_id) FROM Product where category_id=3
+)
 
 -- Problem 11: Retrieve the products that have the highest price within each category
 -- Write an SQL query to retrieve the products that have the highest price within each category.
 -- The result should include the product ID, product name, category ID, and price.
 -- Hint: You may need to use subqueries, joins, and window functions to solve this problem.
-  select min(product_id) as product_id, min(product_name) as product_name, category_id, max(price) as MaxPrice
-  from Products 
-  group by category_id
+SELECT MAX(product_id) as ProductID, MAX(product_name) as ProductName, category_id, MAX(price) FROM maxPrice FROM product
+GROUP BY category_id
+ORDER BY MAX(product_id) 
   
   --Notes: add min to avoid error: Column 'Products.product_id' is invalid in the select list because it is not contained in either an aggregate function or the GROUP BY clause.
 

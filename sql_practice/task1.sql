@@ -1,19 +1,15 @@
 -- Problem 1: Retrieve all products in the Sports category
 -- Write an SQL query to retrieve all products in a specific category.
 
-SELECT 
-    p.product_id,
-    p.category_id,
-    c.category_name
-FROM Products p
-INNER JOIN Categories c ON p.category_id = c.category_id
-Where category_name='Sports';
+SELECT *
+FROM Products 
+Where category_id=8;
 
 -- Problem 2: Retrieve the total number of orders for each user
 -- Write an SQL query to retrieve the total number of orders for each user.
 -- The result should include the user ID, username, and the total number of orders.
 
- select u.user_id, u.username, sum(o.total_amount) as Total from Orders o
+ select u.user_id, u.username, COUNT(o.total_amount) as Total from Orders o
   join Users u on o.user_id = u.user_id
   group by u.user_id, u.username 
 
